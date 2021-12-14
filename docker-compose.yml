@@ -1,0 +1,29 @@
+version: "3"
+   
+services:
+  backend:
+    container_name: backend-kmmrce
+    build: ./kmmrce
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - './kmmrce:/app/kmmrce'
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+
+  frontend:
+    container_name: frontend-kmmrce
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    tty: true
+    volumes:
+      - './frontend:/app/frontend'
+      - '/app/frontend/node_modules'
+    ports:
+      - 3000:3000
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - backend
