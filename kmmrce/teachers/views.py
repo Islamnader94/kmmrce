@@ -1,12 +1,10 @@
-import json
 import io, csv
-from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Subject, Teacher
+from .utils import import_csv_teachers
 from .serializers import SubjectSerializer, TeacherSerializer, UserSerializer
 from rest_framework.views import APIView
 from django.core.exceptions import ObjectDoesNotExist
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -42,51 +40,28 @@ class LoginView(APIView):
 class CSVTeachers(APIView):
 
     def post(self, request):
-        csvFile = io.TextIOWrapper(request.FILES['file'].file)
-        data = csv.DictReader(csvFile)
-        list_of_dict = list(data)
         try:
-            objs = [
-                Teacher(
-                    first_name=row['First Name'],
-                    last_name=row['Last Name'],
-                    profile_picture=row['Profile picture'],
-                    email=row['Email Address'],
-                    phone_number=row['Phone Number'],
-                    room_number=row['Room Number'],
-                    # subject=Teacher.subject.add(subject[0])
-                )
-                for row in list_of_dict if row['First Name']
-            ]
-            teacher_data = Teacher.objects.bulk_create(objs)
+            import pdb;
+            pdb.set_trace();
+            message = import_csv_teachers(request.FILES['file'].file)
+            if message:
+                data = {"message": "Imported Successfully"}
+                return JsonResponse(
+                    data,
+                    safe=False,
+                    status=status.HTTP_200_OK)
+            else:
+                data = {"message": "Data already exists!"}
+                return JsonResponse(
+                    data,
+                    safe=False,
+                    status=status.HTTP_403_FORBIDDEN)
 
-            for data in list_of_dict:
-                subject_data = data['Subjects taught']
-                teacher_email = data['Email Address']
-                subject_list = subject_data.split (",")
-                for subject_name in subject_list:
-                    if not subject_name:
-                        pass
-                    else:
-                        subject = Subject.objects.get_or_create(name=subject_name)
-                        teacher = Teacher.objects.filter(email=teacher_email)
-                        count_subjects = teacher[0].subject.all().count()
-                        if count_subjects <= 4:
-                            teacher[0].subject.add(subject[0].id)
-                        else:
-                            pass
-
-            returnmsg = {
-                "message": "Imported Successfully",
-                "status_code": 200
-            }
-        except:
-            returnmsg = {
-                "message": "Data already exists",
-                "status_code": 500
-            }
-
-        return JsonResponse(returnmsg)
+        except Exception:
+            return JsonResponse(
+                {'error': 'Something terrible went wrong'},
+                safe=False,
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class TeacherView(APIView):
