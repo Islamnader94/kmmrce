@@ -4,6 +4,7 @@
 
 - ReactJs (FrontEnd)
 - Django 3 (BackEnd)
+- Pytest (BackEnd)
 - Docker and Docker-compose (DevOps)
 
 
@@ -63,4 +64,9 @@ docker exec -it backend-kmmrce bash
 root@7ea2e000ac5a:/app/kmmrce# python3 manage.py makemigrations
 root@7ea2e000ac5a:/app/kmmrce# python3 manage.py migrate
 root@7ea2e000ac5a:/app/kmmrce# python3 manage.py createsuperuser
+```
+
+### To run tests:
+```
+root@7ea2e000ac5a:/app/kmmrce# pytest
 ```

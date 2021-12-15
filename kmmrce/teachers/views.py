@@ -23,6 +23,11 @@ class LoginView(APIView):
                     data,
                     safe=False,
                     status=status.HTTP_200_OK)
+            else:
+                return JsonResponse(
+                    {'error': 'Authentication error'},
+                    safe=False,
+                    status=status.HTTP_401_UNAUTHORIZED)
 
         except ObjectDoesNotExist as e:
             return JsonResponse(
@@ -41,8 +46,6 @@ class CSVTeachers(APIView):
 
     def post(self, request):
         try:
-            import pdb;
-            pdb.set_trace();
             message = import_csv_teachers(request.FILES['file'].file)
             if message:
                 data = {"message": "Imported Successfully"}
