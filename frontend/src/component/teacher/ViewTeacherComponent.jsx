@@ -38,7 +38,7 @@ class EditUserComponent extends Component {
                     id: res.data['id'],
                     firstName: res.data['first_name'],
                     lastName: res.data['last_name'],
-                    picture: res.data['profile_picture'],
+                    picture: res.data['image_url'],
                     email: res.data['email'],
                     phone: res.data['phone_number'],
                     room: res.data['room_number'],
@@ -64,10 +64,10 @@ class EditUserComponent extends Component {
                 <Card style={useStyles}>
                     <CardActionArea>
                         <CardMedia className={useStyles.media}>
-                        {this.state.picture.replace(/\s/g, '') === '' || this.state.picture === '21239.JPG' ?
+                        {this.state.picture === null ?
                             <FaceIcon style={image} /> 
                         :
-                            <img style={image} src={process.env.PUBLIC_URL + `/teachers/${this.state.picture}`} alt="" />
+                            <img style={image} src={this.state.picture} alt="" />
                         }
                         </CardMedia>
                         <CardContent>

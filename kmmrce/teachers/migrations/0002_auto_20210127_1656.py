@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='teacher',
             name='profile_picture',
-            field=models.CharField(blank=True, max_length=300, null=True),
+            field=models.ImageField(blank=True, upload_to='teachers_images'),
         ),
         migrations.AlterField(
             model_name='teacher',

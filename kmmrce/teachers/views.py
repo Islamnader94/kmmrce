@@ -35,9 +35,9 @@ class LoginView(APIView):
                 safe=False,
                 status=status.HTTP_404_NOT_FOUND)
 
-        except Exception:
+        except Exception as e:
             return JsonResponse(
-                {'error': 'Something terrible went wrong'},
+                {'error': str(e)},
                 safe=False,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -60,9 +60,9 @@ class CSVTeachers(APIView):
                     safe=False,
                     status=status.HTTP_403_FORBIDDEN)
 
-        except Exception:
+        except Exception as e:
             return JsonResponse(
-                {'error': 'Something terrible went wrong'},
+                {'error': str(e)},
                 safe=False,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -73,10 +73,10 @@ class TeacherView(APIView):
         try:
             if teacher_id:
                 teachers = Teacher.objects.filter(id=teacher_id).first()
-                serializer = TeacherSerializer(teachers)
+                serializer = TeacherSerializer(teachers, context={"request":request})
             else:
                 teachers = Teacher.objects.all()
-                serializer = TeacherSerializer(teachers, many=True)
+                serializer = TeacherSerializer(teachers, context={"request":request}, many=True)
 
             return JsonResponse(
                 serializer.data,
@@ -89,8 +89,8 @@ class TeacherView(APIView):
                 safe=False,
                 status=status.HTTP_404_NOT_FOUND)
 
-        except Exception:
+        except Exception as e:
             return JsonResponse(
-                {'error': 'Something terrible went wrong'},
+                {'error': str(e)},
                 safe=False,
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)

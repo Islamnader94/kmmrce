@@ -38,7 +38,6 @@ class AddUserComponent extends Component{
                         ref={(input) => { this.filesInput = input }}
                         name="file"
                         icon='file text outline'
-                        iconPosition='left'
                         label='Upload CSV'
                         placeholder='UploadCSV...'
                         onChange={this.onChange}

@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Switch from "react-switch";
 
-class ListUserComponent extends Component {
+class ListTeacherComponent extends Component {
 
     constructor(props) {
         super(props)
@@ -106,13 +106,13 @@ class ListUserComponent extends Component {
                 }
             }).map(d => {
                 return (
-                    <TableBody>
-                        <TableRow key={d.id}>
+                    <TableBody key={d.id}>
+                        <TableRow>
                             <TableCell align="right">
-                                {d.profile_picture.replace(/\s/g, '') === '' || d.profile_picture === '21239.JPG' ?
+                                {d.image_url === null ?
                                     <FaceIcon /> 
                                 :
-                                    <img style={image} src={process.env.PUBLIC_URL + `/teachers/${d.profile_picture}`} alt="" /> 
+                                    <img style={image} src={d.image_url} alt="" /> 
                                 }
                             </TableCell>
                             <TableCell align="right">{d.first_name}</TableCell>
@@ -221,4 +221,4 @@ const style ={
     justifyContent: 'center'
 }
 
-export default ListUserComponent;
+export default ListTeacherComponent;
