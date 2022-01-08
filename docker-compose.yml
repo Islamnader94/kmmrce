@@ -5,8 +5,10 @@ services:
     container_name: backend-kmmrce
     build: ./kmmrce
     command: >
-      sh -c "python manage.py migrate &&
-            python manage.py runserver 0.0.0.0:8000"
+      sh -c "python3 manage.py makemigrations &&
+             python3 manage.py migrate &&
+             python3 manage.py initadmin &&
+             python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - './kmmrce:/app/kmmrce'
     ports:
